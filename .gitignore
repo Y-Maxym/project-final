@@ -7,3 +7,5 @@ attachments
 *.patch
 
 
+/src/test/resources/pgdata-test/
+/src/main/resources/pgdata/
