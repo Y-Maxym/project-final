@@ -3,9 +3,9 @@
 ## Концепция:
 
 - Spring Modulith
-    - [Spring Modulith: достигли ли мы зрелости модульности](https://habr.com/ru/post/701984/)
-    - [Introducing Spring Modulith](https://spring.io/blog/2022/10/21/introducing-spring-modulith)
-    - [Spring Modulith - Reference documentation](https://docs.spring.io/spring-modulith/docs/current-SNAPSHOT/reference/html/)
+  - [Spring Modulith: достигли ли мы зрелости модульности](https://habr.com/ru/post/701984/)
+  - [Introducing Spring Modulith](https://spring.io/blog/2022/10/21/introducing-spring-modulith)
+  - [Spring Modulith - Reference documentation](https://docs.spring.io/spring-modulith/docs/current-SNAPSHOT/reference/html/)
 
 ```
   url: jdbc:postgresql://localhost:5432/jira
@@ -14,9 +14,9 @@
 ```
 
 - Есть 2 общие таблицы, на которых не fk
-    - _Reference_ - справочник. Связь делаем по _code_ (по id нельзя, тк id привязано к окружению-конкретной базе)
-    - _UserBelong_ - привязка юзеров с типом (owner, lead, ...) к объекту (таска, проект, спринт, ...). FK вручную будем
-      проверять
+  - _Reference_ - справочник. Связь делаем по _code_ (по id нельзя, тк id привязано к окружению-конкретной базе)
+  - _UserBelong_ - привязка юзеров с типом (owner, lead, ...) к объекту (таска, проект, спринт, ...). FK вручную будем
+    проверять
 
 ## Аналоги
 
@@ -28,3 +28,17 @@
 
 Список выполненных задач:
 
+| #  | info                                                                         | Done |
+|:---|:-----------------------------------------------------------------------------|------|
+| 1  | Розібратися зі структурою проєкту (onboarding)                               | ✅    |
+| 2  | Видалити соціальні мережі: vk, yandex.                                       | ✅    |
+| 3  | Винести чутливу інформацію до окремого проперті файлу                        | ✅    |
+| 4  | Переробити тести так, щоб під час тестів використовувалася in memory БД (H2) | ✅    |
+| 5  | Написати тести для всіх публічних методів контролера ProfileRestController   | ✅    |
+| 6  |                                                                              |      |
+| 7  |                                                                              |      |
+| 8  |                                                                              |      |
+| 9  |                                                                              |      |
+| 10 |                                                                              |      |
+| 11 |                                                                              |      |
+| 12 |                                                                              |      |
