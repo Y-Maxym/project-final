@@ -105,6 +105,7 @@ public class TaskService {
         }
     }
 
+    @Transactional(readOnly = true)
     public TaskToFull get(long id) {
         Task task = Util.checkExist(id, handler.getRepository().findFullById(id));
         TaskToFull taskToFull = fullMapper.toTo(task);
