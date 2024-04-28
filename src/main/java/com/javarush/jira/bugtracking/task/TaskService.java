@@ -19,9 +19,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
 import static com.javarush.jira.bugtracking.task.TaskUtil.fillExtraFields;
@@ -33,6 +38,9 @@ import static com.javarush.jira.ref.ReferenceService.getRefTo;
 public class TaskService {
     static final String CANNOT_ASSIGN = "Cannot assign as %s to task with status=%s";
     static final String CANNOT_UN_ASSIGN = "Cannot unassign as %s from task with status=%s";
+    static final String IN_PROGRESS_STATUS = "in_progress";
+    static final String READY_FOR_REVIEW_STATUS = "ready_for_review";
+    static final String DONE_STATUS = "done";
 
     private final Handlers.TaskExtHandler handler;
     private final Handlers.ActivityHandler activityHandler;
@@ -150,6 +158,32 @@ public class TaskService {
                 .orElseThrow(() -> new NotFoundException(String
                         .format("Not found assignment with userType=%s for task {%d} for user {%d}", userType, id, userId)));
         assignment.setEndpoint(LocalDateTime.now());
+    }
+
+    public Long workingTime(Task task) {
+        return checkTimeBetweenStatuses(task.getId(), IN_PROGRESS_STATUS, READY_FOR_REVIEW_STATUS);
+    }
+
+    public Long testingTime(Task task) {
+        return checkTimeBetweenStatuses(task.getId(), READY_FOR_REVIEW_STATUS, DONE_STATUS);
+    }
+
+    private Long checkTimeBetweenStatuses(Long taskId, String startStatus, String endStatus) {
+        List<Activity> activities = activityHandler.getRepository().findAllByTaskIdOrderByUpdatedDesc(taskId)
+                .stream()
+                .filter(act -> startStatus.equals(act.getStatusCode())
+                            || endStatus.equals(act.getStatusCode()))
+                .collect(Collectors.toMap(Activity::getStatusCode, act -> act, (existing, replacement) -> existing))
+                .values()
+                .stream()
+                .toList();
+
+        assert activities.size() > 1;
+
+        LocalDateTime endTime = activities.get(0).getUpdated();
+        LocalDateTime startTime = activities.get(1).getUpdated();
+
+        return ChronoUnit.MINUTES.between(endTime, startTime);
     }
 
     private void checkAssignmentActionPossible(long id, String userType, boolean assign) {
