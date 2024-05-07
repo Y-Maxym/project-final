@@ -13,6 +13,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
+  main:
+    allow-bean-definition-overriding: true
+
   init:
     mode: never
   jpa:
@@ -116,3 +119,9 @@ server:
       enabled: true # Enable http encoding support
       force: true
 springdoc.swagger-ui.path: /doc
+
+jwt:
+  access:
+    duration: 1h
+  refresh:
+    duration: 7d
